@@ -1,12 +1,12 @@
 import { BrowserRouter, Switch, Route } from "react-router-dom";
-import Home from "./routes/Home";
+import Profile from "./pages/Profile";
 
 export default function Router() {
   return (
     <BrowserRouter>
       <Switch>
         <Route exact path="/">
-          <Home />
+          <Profile />
         </Route>
       </Switch>
     </BrowserRouter>
