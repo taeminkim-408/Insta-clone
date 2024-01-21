@@ -7,15 +7,39 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import { Diversity1Outlined, Height } from "@mui/icons-material";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
+    display: "flex",
     padding: theme.spacing(2),
   },
   "& .MuiDialogActions-root": {
     padding: theme.spacing(1),
   },
 }));
+
+const LeftContent = styled("div")({
+  flex: "0 0 50%", // Take up 50% of the width
+});
+
+const RightContent = styled("div")({
+  flex: "0 0 50%", // Take up 50% of the width
+  paddingLeft: "16px", // Add some spacing between left and right content
+});
+const UserInformation = styled("div")({
+  display: "flex",
+  alignItems: "center",
+  marginBottom: "16px",
+  fontWeight: "bold",
+});
+
+const UserImage = styled("img")({
+  width: "32px",
+  height: "32px",
+  marginRight: "8px",
+  borderRadius: "50%", // Add border-radius for a circular shape
+});
 
 export default function PostDialog({ open, onClose, post }) {
   const [comments, setComments] = React.useState([]);
@@ -29,13 +53,7 @@ export default function PostDialog({ open, onClose, post }) {
     updatedComments.splice(commentIndex, 1);
     setComments(updatedComments);
   };
-
-  const editComment = (commentIndex, editedComment) => {
-    const updatedComments = [...comments];
-    updatedComments[commentIndex].text = editedComment;
-    setComments(updatedComments);
-  };
-//
+  
   return (
     <>
       <BootstrapDialog
@@ -64,24 +82,23 @@ export default function PostDialog({ open, onClose, post }) {
         </IconButton>
 
         <DialogContent dividers>
-          <img src={post?.image} alt={post?.postText} style={{ maxWidth: "100%", height: "auto" }} />
-          <p>{post?.postText}</p>
-
+          <LeftContent>
+            <img src={post?.image} alt={post?.postText} style={{ maxWidth: "100%", height: "auto" }} />
+            <p>{post?.postText}</p>
+          </LeftContent>
+          <RightContent>
           <ul>
             {comments.map((comment, index) => (
               <li key={index}>
                 <span>{comment.username}:</span> {comment.text}
                 <Button onClick={() => deleteComment(index)}>삭제</Button>
-                <Button onClick={() => editComment(index, prompt("댓글 수정", comment.text))}>수정</Button>
               </li>
             ))}
           </ul>
+          </RightContent>  
         </DialogContent>
 
         <DialogActions>
-          <Button autoFocus onClick={onClose}>
-            닫기
-          </Button>
           <Button onClick={() => addComment(prompt("댓글 추가"))}>
             댓글 달기...
           </Button>
