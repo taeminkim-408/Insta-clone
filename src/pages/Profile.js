@@ -27,6 +27,7 @@ const posts = [
 // 스타일드 컴포넌트를 사용하여 스타일 지정
 const Container = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 `;
@@ -37,6 +38,8 @@ const Grid = styled.div`
   width: 1000px;
   height: 100vh;
 `;
+
+const Img = styled.img``;
 
 const Item = styled.div`
   width: 300px;
@@ -71,7 +74,9 @@ export default function Profile() {
 
       <Container>
         {/* 페이지 상단에 Instagram Clone 텍스트 표시 */}
-        Instagram Clone
+        <div>
+          <h1>Instagram Clone</h1>내 프로필
+        </div>
         {/* 포스트 배열을 순회하며 포스트 정보를 표시 */}
         <Grid>
           {posts.map((post) => (

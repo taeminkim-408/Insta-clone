@@ -48,13 +48,17 @@ export default function PostDialog({ open, onClose, post }) {
         {/* 다이얼로그 내용 */}
         <DialogContent dividers>
           {/* 포스트의 이미지 표시 */}
-          <img src={post?.image} alt={post?.postText} />
+          <img
+            src={post?.image}
+            alt={post?.postText}
+            style={{ width: "100%" }}
+          />
         </DialogContent>
 
         {/* 다이얼로그 하단의 액션 버튼 */}
         <DialogActions>
           <Button autoFocus onClick={onClose}>
-            Save changes
+            확인
           </Button>
         </DialogActions>
       </BootstrapDialog>
