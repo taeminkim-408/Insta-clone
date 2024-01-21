@@ -18,20 +18,38 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 }));
 
 export default function PostDialog({ open, onClose, post }) {
+  const [comments, setComments] = React.useState([]);
+
+  const addComment = (newComment) => {
+    setComments([...comments, { text: newComment, username: "User" }]);
+  };
+
+  const deleteComment = (commentIndex) => {
+    const updatedComments = [...comments];
+    updatedComments.splice(commentIndex, 1);
+    setComments(updatedComments);
+  };
+
+  const editComment = (commentIndex, editedComment) => {
+    const updatedComments = [...comments];
+    updatedComments[commentIndex].text = editedComment;
+    setComments(updatedComments);
+  };
+//
   return (
     <>
-      {/* 스타일드 다이얼로그 컴포넌트 */}
       <BootstrapDialog
         onClose={onClose}
         aria-labelledby="customized-dialog-title"
         open={open}
+        maxWidth="md"
       >
-        {/* 다이얼로그의 제목 */}
         <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-          {post?.postText}
+          <div>
+            <span>{post?.username}</span>
+          </div>
         </DialogTitle>
 
-        {/* 다이얼로그 상단의 닫기 버튼 */}
         <IconButton
           aria-label="close"
           onClick={onClose}
@@ -45,16 +63,27 @@ export default function PostDialog({ open, onClose, post }) {
           <CloseIcon />
         </IconButton>
 
-        {/* 다이얼로그 내용 */}
         <DialogContent dividers>
-          {/* 포스트의 이미지 표시 */}
-          <img src={post?.image} alt={post?.postText} />
+          <img src={post?.image} alt={post?.postText} style={{ maxWidth: "100%", height: "auto" }} />
+          <p>{post?.postText}</p>
+
+          <ul>
+            {comments.map((comment, index) => (
+              <li key={index}>
+                <span>{comment.username}:</span> {comment.text}
+                <Button onClick={() => deleteComment(index)}>삭제</Button>
+                <Button onClick={() => editComment(index, prompt("댓글 수정", comment.text))}>수정</Button>
+              </li>
+            ))}
+          </ul>
         </DialogContent>
 
-        {/* 다이얼로그 하단의 액션 버튼 */}
         <DialogActions>
           <Button autoFocus onClick={onClose}>
-            Save changes
+            닫기
+          </Button>
+          <Button onClick={() => addComment(prompt("댓글 추가"))}>
+            댓글 달기...
           </Button>
         </DialogActions>
       </BootstrapDialog>
