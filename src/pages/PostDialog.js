@@ -141,7 +141,7 @@ export default function PostDialog({ open, onClose, post }) {
             {comments.map((comment, index) => (
               <li key={index}>
                 <UserImage src={comment.image} alt={comment.username} />
-                <span>{comment.username}:</span> {comment.text}
+                <span>{comment.username}</span> {comment.text}
                 <Button onClick={() => deleteComment(index)}>삭제</Button>
               </li>
             ))}
