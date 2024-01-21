@@ -7,7 +7,6 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import { Diversity1Outlined, Height } from "@mui/icons-material";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -20,13 +19,14 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 }));
 
 const LeftContent = styled("div")({
-  flex: "0 0 50%", // Take up 50% of the width
+  flex: "0 0 50%",
 });
 
 const RightContent = styled("div")({
-  flex: "0 0 50%", // Take up 50% of the width
-  paddingLeft: "16px", // Add some spacing between left and right content
+  flex: "0 0 50%",
+  paddingLeft: "16px",
 });
+
 const UserInformation = styled("div")({
   display: "flex",
   alignItems: "center",
@@ -38,14 +38,22 @@ const UserImage = styled("img")({
   width: "32px",
   height: "32px",
   marginRight: "8px",
-  borderRadius: "50%", // Add border-radius for a circular shape
+  borderRadius: "50%",
 });
 
 export default function PostDialog({ open, onClose, post }) {
-  const [comments, setComments] = React.useState([]);
+  const [comments, setComments] = React.useState(post ? post.comments : []);
+  const [newComment, setNewComment] = React.useState("");
 
-  const addComment = (newComment) => {
-    setComments([...comments, { text: newComment, username: "User" }]);
+  React.useEffect(() => {
+    setComments(post ? post.comments : []);
+  }, [post]);
+
+  const addComment = () => {
+    if (newComment.trim() !== "") {
+      setComments([...comments, { text: newComment, username: "User" }]);
+      setNewComment("");
+    }
   };
 
   const deleteComment = (commentIndex) => {
@@ -82,27 +90,33 @@ export default function PostDialog({ open, onClose, post }) {
         </IconButton>
 
         <DialogContent dividers>
-          <LeftContent>
-            <img src={post?.image} alt={post?.postText} style={{ maxWidth: "100%", height: "auto" }} />
-            <p>{post?.postText}</p>
-          </LeftContent>
-          <RightContent>
+        <LeftContent>
+          <img src={post?.image} alt={post?.postText} style={{ maxWidth: "100%", height: "auto" }} />
+          <p>{post?.postText}</p>
+        </LeftContent>
+        <RightContent>
           <ul>
             {comments.map((comment, index) => (
               <li key={index}>
-                <span>{comment.username}:</span> {comment.text}
+                {comment.u_image}<span>{comment.username}</span> {comment.text}
                 <Button onClick={() => deleteComment(index)}>삭제</Button>
               </li>
             ))}
           </ul>
-          </RightContent>  
-        </DialogContent>
+        </RightContent>
+      </DialogContent>
 
-        <DialogActions>
-          <Button onClick={() => addComment(prompt("댓글 추가"))}>
-            댓글 달기...
-          </Button>
-        </DialogActions>
+      <DialogActions style={{ display: "flex", alignItems: "center", justifyContent: "center", paddingRight: "16px" }}>
+        <input
+          type="text"
+          value={newComment}
+          onChange={(e) => setNewComment(e.target.value)}
+          placeholder="댓글 달기..."
+          style={{ flex: "1", marginRight: "8px" }}
+        />
+        <Button onClick={addComment}>게시</Button>
+      </DialogActions>
+
       </BootstrapDialog>
     </>
   );
