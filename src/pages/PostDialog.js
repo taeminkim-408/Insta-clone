@@ -7,15 +7,41 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import { Diversity1Outlined, Height } from "@mui/icons-material";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
+    display: "flex",
     padding: theme.spacing(2),
   },
   "& .MuiDialogActions-root": {
     padding: theme.spacing(1),
   },
+  height: "100%",
+  width: "100%",
 }));
+
+const LeftContent = styled("div")({
+  flex: "0 0 50%", // Take up 50% of the width
+});
+
+const RightContent = styled("div")({
+  flex: "0 0 50%", // Take up 50% of the width
+  paddingLeft: "16px", // Add some spacing between left and right content
+});
+const UserInformation = styled("div")({
+  display: "flex",
+  alignItems: "center",
+  marginBottom: "16px",
+  fontWeight: "bold",
+});
+
+const UserImage = styled("img")({
+  width: "32px",
+  height: "32px",
+  marginRight: "8px",
+  borderRadius: "50%", // Add border-radius for a circular shape
+});
 
 export default function PostDialog({ open, onClose, post }) {
   return (
@@ -26,10 +52,7 @@ export default function PostDialog({ open, onClose, post }) {
         aria-labelledby="customized-dialog-title"
         open={open}
       >
-        {/* 다이얼로그의 제목 */}
-        <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-          {post?.postText}
-        </DialogTitle>
+        
 
         {/* 다이얼로그 상단의 닫기 버튼 */}
         <IconButton
@@ -47,12 +70,46 @@ export default function PostDialog({ open, onClose, post }) {
 
         {/* 다이얼로그 내용 */}
         <DialogContent dividers>
+          <LeftContent>
           {/* 포스트의 이미지 표시 */}
           <img
             src={post?.image}
             alt={post?.postText}
             style={{ width: "100%" }}
           />
+          </LeftContent>
+          <RightContent>
+            {/* 이용자 */}
+            <UserInformation>
+            <UserImage src={post?.u_image} alt={post?.u_id} />
+            <DialogTitle sx={{ m: 0, p: 0 }}>{post?.u_id}</DialogTitle>
+          </UserInformation>
+        <hr/>
+        
+          <div style={{ display: "flex", alignItems: "center" }}>
+  {/* 포스트 한 사람의 정보, 캡션*/}
+  <UserInformation>
+    <UserImage src={post?.u_image} alt={post?.u_id} />
+    {post?.u_id}
+  </UserInformation>
+  <div style={{ marginLeft: "8px" }}>
+    {post?.postText}
+  </div>
+</div>
+{/* 댓글단 사람의 정보, 댓글 내용 */}
+        <div style={{ display: "flex", alignItems: "center" }}>
+  {/* 댓글단 사람 정보 */}
+  <UserInformation>
+    <UserImage src={post?.c_image} alt={post?.c_id} />
+    {post?.c_id}
+  </UserInformation>
+
+  {/* 댓글 내용 */}
+  <div style={{ marginLeft: "8px" }}>
+    {post?.c_comment}
+  </div>
+</div>
+          </RightContent>
         </DialogContent>
 
         {/* 다이얼로그 하단의 액션 버튼 */}

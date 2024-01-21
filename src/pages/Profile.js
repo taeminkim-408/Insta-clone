@@ -10,7 +10,13 @@ const posts = [
     postText: "리액트 공부중…",
     image:
       "https://velog.velcdn.com/images/dooooh2/post/e03d49ee-8c38-4195-ae3e-1ca6668d9581/image.png",
-  },
+    c_comment: "나도...",
+    c_id: "commentid",
+    c_image: "https://image.dongascience.com/Photo/2020/03/5bddba7b6574b95d37b6079c199d7101.jpg",
+    u_id: "userid",
+    u_image: "https://velog.velcdn.com/images/dooooh2/post/e03d49ee-8c38-4195-ae3e-1ca6668d9581/image.png",
+
+    },
   {
     postId: 2,
     postText: "마라탕먹고싶다",
