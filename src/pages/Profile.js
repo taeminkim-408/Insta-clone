@@ -11,6 +11,12 @@ const posts = [
     p_image:
       "https://velog.velcdn.com/images/dooooh2/post/e03d49ee-8c38-4195-ae3e-1ca6668d9581/image.png",
     p_like: 3,
+    u_id: "userid",
+    u_image: "https://velog.velcdn.com/images/dooooh2/post/e03d49ee-8c38-4195-ae3e-1ca6668d9581/image.png",
+    c_comment: "나도...",
+    c_id: "commentid",
+    c_image: "https://image.dongascience.com/Photo/2020/03/5bddba7b6574b95d37b6079c199d7101.jpg",
+ 
   },
   {
     p_id: 2,
