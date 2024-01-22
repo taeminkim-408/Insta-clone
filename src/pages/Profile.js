@@ -23,65 +23,178 @@ const posts = [
       "https://www.thecookierookie.com/wp-content/uploads/2018/07/bulletproof-coffee-recipe-5-of-9.jpg",
   },
 ];
-
 // 스타일드 컴포넌트를 사용하여 스타일 지정
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+`;
+const ProfileImage = styled.img`
+  width: 150px; /* 변경된 이미지 크기 */
+  height: 150px; /* 변경된 이미지 크기 */
+  border-radius: 50%;
+  margin-right: 20px;
+`;
+
+
+const UserInfo = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+`;
+
+const UserStats = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 250px;
+`;
+
+const TopBar = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+`;
+
+const ProfileHeader = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+`;
+
+const ProfileInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-left: 20px;
 `;
 
 const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
   width: 1000px;
-  height: 100vh;
+  max-width: 100%;
+  margin-top: 20px;
 `;
 
-const Img = styled.img``;
-
 const Item = styled.div`
-  width: 300px;
-  height: 300px;
+  width: 100%;
+  height: 100%;
+  max-width: 300px;
   margin: 10px;
   padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 
   img {
     width: 100%;
-    height: 100%;
+    height: 200px;
     object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+
+  p {
+    margin: 0;
+    font-size: 14px;
+    color: #333;
   }
 `;
 
-// Profile 컴포넌트 정의
+const Divider = styled.div`
+  border-top: 1px solid #ccc;
+  margin: 20px 0;
+  width: 100%;
+`;
+
+const Statistics = styled.div`
+  display: flex;
+  justify-content: space-around;
+  margin-top: 10px;
+`;
+
+const StatisticItem = styled.div`
+  text-align: center;
+`;
+
+const Button = styled.button`
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+`;
+
 export default function Profile() {
-  // 다이얼로그 상태 및 현재 선택된 포스트 상태 설정
   const [isOpen, setIsOpen] = useState(false);
   const [post, setPost] = useState(null);
 
-  // 다이얼로그 닫기 핸들러
   const handleCloseDialog = () => {
     setIsOpen(false);
   };
 
+  const user = {
+    ProfileImage: "https://upload.wikimedia.org/wikipedia/commons/0/09/HGU-Emblem-eng2.png",
+    username: "HGU_2024_Instagram",
+    fullName: "한동인",
+    followers: 100,
+    following: 50,
+    posts: posts.length,
+    bio: "안녕 내이름을 소개하지",
+  };
+
   return (
     <>
-      {/* 헬멧을 사용하여 페이지의 타이틀 설정 */}
       <Helmet>
         <title>Instagram</title>
       </Helmet>
 
       <Container>
-        {/* 페이지 상단에 Instagram Clone 텍스트 표시 */}
-        <div>
-          <h1>Instagram Clone</h1>내 프로필
-        </div>
-        {/* 포스트 배열을 순회하며 포스트 정보를 표시 */}
+        <TopBar>
+          <div>Instagram Clone Coding</div>
+          <div>
+            <Button>프로필</Button>
+            <Button>보관된 스토리 보기</Button>
+            <Button>⚙️</Button>
+          </div>
+        </TopBar>
+        
+        <ProfileHeader>
+        <ProfileImage src={user.ProfileImage} alt="Profile" />
+          <ProfileInfo>
+          
+            <UserInfo>
+              <h2>{user.username}</h2>
+
+            </UserInfo>
+            <UserStats>
+            <StatisticItem>
+              <p>게시글       <strong>{user.posts}</strong></p>
+            </StatisticItem>
+              <StatisticItem>
+              <p>팔로워       <strong>{user.followers}</strong></p>
+                
+              </StatisticItem>
+              <StatisticItem>
+              <p>팔로잉       <strong>{user.following}</strong></p>
+              </StatisticItem>
+              
+            </UserStats>
+            <p>{user.bio}</p>
+          </ProfileInfo>
+          
+        </ProfileHeader>
+
+        <Divider />
+        
+
         <Grid>
           {posts.map((post) => (
             <Item key={post.postId}>
-              {/* 이미지 및 캡션 표시, 클릭 시 다이얼로그 열림 */}
               <img
                 src={post.image}
                 alt={post.postText}
@@ -96,10 +209,10 @@ export default function Profile() {
         </Grid>
       </Container>
 
-      {/* 다이얼로그 열린 상태일 때 PostDialog 컴포넌트 표시 */}
       {isOpen && (
         <PostDialog open={isOpen} onClose={handleCloseDialog} post={post} />
       )}
     </>
   );
 }
+
