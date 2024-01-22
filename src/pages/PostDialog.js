@@ -77,7 +77,7 @@ export default function PostDialog({ open, onClose, post }) {
         onClose={onClose}
         aria-labelledby="customized-dialog-title"
         open={open}
-        maxWidth="lg"
+        maxWidth="md"
       >
       
       {/* 다이얼로그 상단의 닫기 버튼 */}
