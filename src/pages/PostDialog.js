@@ -28,7 +28,7 @@ export default function PostDialog({ open, onClose, post }) {
       >
         {/* 다이얼로그의 제목 */}
         <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-          {post?.postText}
+          {post?.p_text}
         </DialogTitle>
 
         {/* 다이얼로그 상단의 닫기 버튼 */}
@@ -49,8 +49,8 @@ export default function PostDialog({ open, onClose, post }) {
         <DialogContent dividers>
           {/* 포스트의 이미지 표시 */}
           <img
-            src={post?.image}
-            alt={post?.postText}
+            src={post?.p_image}
+            alt={post?.p_text}
             style={{ width: "100%" }}
           />
         </DialogContent>
