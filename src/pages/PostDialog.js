@@ -127,6 +127,7 @@ export default function PostDialog({ open, onClose, post }) {
 
         {/* 다이얼로그 내용 */}
         <DialogContent dividers>
+        <div style={{ display: "flex" }}>
           <LeftContent>
             {/* 포스트의 이미지 표시 */}
             <PostImg
@@ -172,10 +173,8 @@ export default function PostDialog({ open, onClose, post }) {
                 </li>
               ))}
             </ul>
-          </RightContent>
-        </DialogContent>
-
-        {/* 다이얼로그 하단의 액션 버튼 */}
+            <hr/>
+            {/* 다이얼로그 하단의 액션 버튼 */}
         <DialogActions
           style={{
             display: "flex",
@@ -193,6 +192,11 @@ export default function PostDialog({ open, onClose, post }) {
           />
           <Button onClick={addComment}>게시</Button>
         </DialogActions>
+
+            
+          </RightContent>
+          </div>
+        </DialogContent>
       </BootstrapDialog>
     </>
   );
