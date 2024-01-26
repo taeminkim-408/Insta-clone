@@ -11,12 +11,6 @@ const posts = [
     p_image:
       "https://velog.velcdn.com/images/dooooh2/post/e03d49ee-8c38-4195-ae3e-1ca6668d9581/image.png",
     p_like: 3,
-    u_id: "userid",
-    u_image: "https://velog.velcdn.com/images/dooooh2/post/e03d49ee-8c38-4195-ae3e-1ca6668d9581/image.png",
-    c_comment: "나도...",
-    c_id: "commentid",
-    c_image: "https://image.dongascience.com/Photo/2020/03/5bddba7b6574b95d37b6079c199d7101.jpg",
- 
   },
   {
     p_id: 2,
@@ -29,7 +23,7 @@ const posts = [
     p_text: "오늘은 뭐하지",
     p_image:
       "https://www.thecookierookie.com/wp-content/uploads/2018/07/bulletproof-coffee-recipe-5-of-9.jpg",
-      p_like: 210,
+    p_like: 210,
   },
   {
     p_id: 4,
@@ -54,7 +48,6 @@ const posts = [
   },
 ];
 
-
 // 스타일드 컴포넌트를 사용하여 스타일 지정
 const Container = styled.div`
   display: flex;
@@ -69,7 +62,6 @@ const ProfileImage = styled.img`
   border-radius: 50%;
   margin-right: 20px;
 `;
-
 
 const UserInfo = styled.div`
   display: flex;
@@ -170,7 +162,8 @@ export default function Profile() {
   };
 
   const user = {
-    ProfileImage: "https://upload.wikimedia.org/wikipedia/commons/0/09/HGU-Emblem-eng2.png",
+    ProfileImage:
+      "https://upload.wikimedia.org/wikipedia/commons/0/09/HGU-Emblem-eng2.png",
     username: "HGU_2024_Instagram",
     fullName: "한동인",
     followers: 100,
@@ -194,48 +187,51 @@ export default function Profile() {
             <Button>⚙️</Button>
           </div>
         </TopBar>
-        
+
         <ProfileHeader>
-        <ProfileImage src={user.ProfileImage} alt="Profile" />
+          <ProfileImage src={user.ProfileImage} alt="Profile" />
           <ProfileInfo>
-          
             <UserInfo>
               <h2>{user.username}</h2>
-
             </UserInfo>
             <UserStats>
-            <StatisticItem>
-              <p>게시글       <strong>{user.posts}</strong></p>
-            </StatisticItem>
               <StatisticItem>
-              <p>팔로워       <strong>{user.followers}</strong></p>
-                
+                <p>
+                  게시글 <strong>{user.posts}</strong>
+                </p>
               </StatisticItem>
               <StatisticItem>
-              <p>팔로잉       <strong>{user.following}</strong></p>
+                <p>
+                  팔로워 <strong>{user.followers}</strong>
+                </p>
               </StatisticItem>
-              
+              <StatisticItem>
+                <p>
+                  팔로잉 <strong>{user.following}</strong>
+                </p>
+              </StatisticItem>
             </UserStats>
             <p>{user.bio}</p>
           </ProfileInfo>
-          
         </ProfileHeader>
 
         <Divider />
-        
 
         <Grid>
           {posts.map((post) => (
-            <Item key={post.postId}>
+            <Item key={post.p_id}>
               <img
-                src={post.image}
-                alt={post.postText}
+                src={post.p_image}
+                alt={post.p_text}
                 onClick={() => {
                   setPost(post);
                   setIsOpen(true);
                 }}
               />
-              <p>{post.postText}</p>
+              <p>
+                ❤️ {post.p_like}
+                {post.p_text}
+              </p>
             </Item>
           ))}
         </Grid>
@@ -247,4 +243,3 @@ export default function Profile() {
     </>
   );
 }
-
