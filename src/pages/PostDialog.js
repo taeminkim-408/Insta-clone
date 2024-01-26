@@ -7,6 +7,9 @@ import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { useEffect, useState } from "react";
+import heart from '../icon/heart.png';
+import fullHeart from '../icon/fullHeart.png';
+
 
 const profiles = {
   u_id: 1,
@@ -73,6 +76,12 @@ const PostImg = styled("img")({
   objectFit: "cover",
 });
 
+const HeartImg = styled("img")({
+  width: "100%",
+  height: "100%",
+  objectFit: "cover",
+});
+
 export default function PostDialog({ open, onClose, post }) {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
@@ -102,6 +111,15 @@ export default function PostDialog({ open, onClose, post }) {
     setComments(updatedComments);
   };
 
+  const cdHeart = function(e){
+    if(e.target.getAttribute("src") == heart){
+      e.target.setAttribute("src", fullHeart);
+    }
+    else if(e.target.getAttribute("src") == fullHeart){
+      e.target.setAttribute("src", heart);
+    }
+  };
+
   return (
     <>
       {/* 스타일드 다이얼로그 컴포넌트 */}
@@ -127,6 +145,7 @@ export default function PostDialog({ open, onClose, post }) {
 
         {/* 다이얼로그 내용 */}
         <DialogContent dividers>
+        <div style={{ display: "flex" }}>
           <LeftContent>
             {/* 포스트의 이미지 표시 */}
             <PostImg
@@ -172,10 +191,16 @@ export default function PostDialog({ open, onClose, post }) {
                 </li>
               ))}
             </ul>
-          </RightContent>
-        </DialogContent>
-
-        {/* 다이얼로그 하단의 액션 버튼 */}
+            <hr/>
+            {/* 좋아요 버튼 */}
+            <HeartImg
+            
+              src={heart}
+              style={{ width: "8%", height: "auto" }}
+              onClick={cdHeart}
+            />
+            <hr/>
+            {/* 다이얼로그 하단의 액션 버튼 */}
         <DialogActions
           style={{
             display: "flex",
@@ -193,6 +218,11 @@ export default function PostDialog({ open, onClose, post }) {
           />
           <Button onClick={addComment}>게시</Button>
         </DialogActions>
+
+            
+          </RightContent>
+          </div>
+        </DialogContent>
       </BootstrapDialog>
     </>
   );
