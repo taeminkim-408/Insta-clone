@@ -1,57 +1,32 @@
 import { useState } from "react";
 import { Helmet } from "react-helmet";
 import styled from "styled-components";
+import Addpost from './Addpost';
 import PostDialog from "./PostDialog";
 
-// 포스트 목록
+
 const posts = [
   {
-    p_id: 1,
-    p_text: "리액트 공부중…",
-    p_image:
+    postId: 1,
+    postText: "리액트 공부중…",
+    image:
       "https://velog.velcdn.com/images/dooooh2/post/e03d49ee-8c38-4195-ae3e-1ca6668d9581/image.png",
-    p_like: 3,
   },
   {
-    p_id: 2,
-    p_text: "마라탕먹고싶다",
-    p_image: "https://www.foodjang.com/New/05/221806880/221806880_b_1.jpg",
-    p_like: 120,
+    postId: 2,
+    postText: "마라탕먹고싶다",
+    image: "https://www.foodjang.com/New/05/221806880/221806880_b_1.jpg",
   },
   {
-    p_id: 3,
-    p_text: "오늘은 뭐하지",
-    p_image:
+    postId: 3,
+    postText: "오늘은 뭐하지",
+    image:
       "https://www.thecookierookie.com/wp-content/uploads/2018/07/bulletproof-coffee-recipe-5-of-9.jpg",
-    p_like: 210,
-  },
-  {
-    p_id: 4,
-    p_text: "한동에는 눈폭탄이 떨어졌습니다",
-    p_image:
-      "https://sarang.handong.edu/dcp/editor/images/%5B%ED%81%AC%EA%B8%B0%EB%B3%80%ED%99%98%5D12%EC%9B%94_PC(2).png",
-    p_like: 55,
-  },
-  {
-    p_id: 5,
-    p_text: "한동에 봄이 더 빨리 오길 바라며",
-    p_image:
-      "https://encrypted-tbn0.gstatic.com/p_images?q=tbn:ANd9GcRIMF36D7fGoiY4yFSKoVNnN-hm21j1TDAlpA&usqp=CAU",
-    p_like: 3012,
-  },
-  {
-    p_id: 6,
-    p_text: "한동인에게 듣는 한동인 이야기",
-    p_image:
-      "https://encrypted-tbn0.gstatic.com/p_images?q=tbn:ANd9GcQqKTQEdvPq-Nh5KZFrRfvgTClJetQB_Do68w&usqp=CAU",
-    p_like: 1243,
   },
 ];
 
-// 스타일드 컴포넌트를 사용하여 스타일 지정
 const Container = styled.div`
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
   flex-direction: column;
@@ -63,6 +38,7 @@ const ProfileImage = styled.img`
   margin-right: 20px;
 `;
 
+
 const UserInfo = styled.div`
   display: flex;
   align-items: center;
@@ -73,6 +49,11 @@ const UserStats = styled.div`
   display: flex;
   justify-content: space-between;
   width: 250px;
+`;
+
+const TopBarText = styled.div`
+  font-family: 'billabong', sans-serif; /* 폰트 스타일 적용 */
+  padding: 10px;
 `;
 
 const TopBar = styled.div`
@@ -95,6 +76,15 @@ const ProfileInfo = styled.div`
   flex-direction: column;
   margin-left: 20px;
 `;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`;
+// 이미지 버튼 스타일링을 하는 것 입니다. 추후 변경 예정입니다. 
+
 
 const Grid = styled.div`
   display: grid;
@@ -153,6 +143,8 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
+
+
 export default function Profile() {
   const [isOpen, setIsOpen] = useState(false);
   const [post, setPost] = useState(null);
@@ -160,10 +152,12 @@ export default function Profile() {
   const handleCloseDialog = () => {
     setIsOpen(false);
   };
-
+  const addPost = () => {
+    // Addpost 컴포넌트를 사용하는 로직
+    console.log("Addpost button clicked!");
+  };
   const user = {
-    ProfileImage:
-      "https://upload.wikimedia.org/wikipedia/commons/0/09/HGU-Emblem-eng2.png",
+    ProfileImage: "https://upload.wikimedia.org/wikipedia/commons/0/09/HGU-Emblem-eng2.png",
     username: "HGU_2024_Instagram",
     fullName: "한동인",
     followers: 100,
@@ -180,58 +174,56 @@ export default function Profile() {
 
       <Container>
         <TopBar>
-          <div>Instagram Clone Coding</div>
+          <TopBarText>Instagram Clone Coding</TopBarText>
           <div>
+          <Addpost addPost={addPost} /> {/* Addpost 컴포넌트 사용 */}
             <Button>프로필</Button>
             <Button>보관된 스토리 보기</Button>
             <Button>⚙️</Button>
           </div>
         </TopBar>
-
+        
         <ProfileHeader>
-          <ProfileImage src={user.ProfileImage} alt="Profile" />
+        <ProfileImage src={user.ProfileImage} alt="Profile" />
           <ProfileInfo>
+          
             <UserInfo>
               <h2>{user.username}</h2>
+
             </UserInfo>
             <UserStats>
+            <StatisticItem>
+              <p>게시글       <strong>{user.posts}</strong></p>
+            </StatisticItem>
               <StatisticItem>
-                <p>
-                  게시글 <strong>{user.posts}</strong>
-                </p>
+              <p>팔로워       <strong>{user.followers}</strong></p>
+                
               </StatisticItem>
               <StatisticItem>
-                <p>
-                  팔로워 <strong>{user.followers}</strong>
-                </p>
+              <p>팔로잉       <strong>{user.following}</strong></p>
               </StatisticItem>
-              <StatisticItem>
-                <p>
-                  팔로잉 <strong>{user.following}</strong>
-                </p>
-              </StatisticItem>
+              
             </UserStats>
             <p>{user.bio}</p>
           </ProfileInfo>
+          
         </ProfileHeader>
 
         <Divider />
+        
 
         <Grid>
           {posts.map((post) => (
-            <Item key={post.p_id}>
+            <Item key={post.postId}>
               <img
-                src={post.p_image}
-                alt={post.p_text}
+                src={post.image}
+                alt={post.postText}
                 onClick={() => {
                   setPost(post);
                   setIsOpen(true);
                 }}
               />
-              <p>
-                ❤️ {post.p_like}
-                {post.p_text}
-              </p>
+              <p>{post.postText}</p>
             </Item>
           ))}
         </Grid>
