@@ -58,12 +58,22 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  padding: 0 20px;
+
+  @media (max-width: 768px) {
+    padding: 0 10px;
+  }
 `;
 const ProfileImage = styled.img`
   width: 150px; /* 변경된 이미지 크기 */
   height: 150px; /* 변경된 이미지 크기 */
   border-radius: 50%;
   margin-right: 20px;
+
+  @media (max-width: 768px) {
+    width: 100px;
+    height: 100px;
+  }
 `;
 
 const UserInfo = styled.div`
@@ -112,19 +122,24 @@ const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
-  width: 1000px;
-  max-width: 100%;
+  width: 100%;
+  max-width: 950px;
   margin-top: 20px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
 `;
 
 const Item = styled.div`
   width: 100%;
-  height: 100%;
   max-width: 300px;
-  margin: 10px;
-  padding: 10px;
+  height: 100%;
+  //margin: 10px;
+  padding: 5px;
   border: 1px solid #ddd;
-  border-radius: 8px;
+  border-square: 4px;
   overflow: hidden;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 
@@ -204,6 +219,15 @@ const Overlay = styled.div`
 
   p {
     color: white !important;
+  }
+
+  &:hover {
+    display: flex;
+  }
+
+  @media (max-width: 768px) {
+    display: flex;
+    background-color: rgba(0, 0, 0, 0.5);
   }
 `;
 
