@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Helmet } from "react-helmet";
 import styled from "styled-components";
 import PostDialog from "./PostDialog";
+import TextsmsIcon from '@mui/icons-material/Textsms';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 // 포스트 목록
 const posts = [
@@ -153,6 +155,48 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
+const ImageContainer = styled.div`
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  border-radius: 8px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.3s ease;
+  }
+
+  &:hover img {
+    opacity: 0.7;
+  }
+
+  &:hover div {
+    display: flex;
+  }
+`;
+
+const Overlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  color: white;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s ease;
+
+  p {
+    color: white !important;
+  }
+`;
+
 export default function Profile() {
   const [isOpen, setIsOpen] = useState(false);
   const [post, setPost] = useState(null);
@@ -219,20 +263,34 @@ export default function Profile() {
 
         <Grid>
           {posts.map((post) => (
-            <Item key={post.p_id}>
-              <img
-                src={post.p_image}
-                alt={post.p_text}
-                onClick={() => {
-                  setPost(post);
-                  setIsOpen(true);
-                }}
-              />
-              <p>
-                ❤️ {post.p_like}
-                {post.p_text}
-              </p>
-            </Item>
+            <div style={{ display: 'flex', flexDirection: 'column', paddingBottom: '0px', paddingTop: '0px', position: 'relative' }}>
+              <Item key={post.p_id}>
+                <ImageContainer>
+                  <img
+                      src={post.p_image}
+                      alt={post.p_text}
+
+                      onClick={() => {
+                        setPost(post);
+                        setIsOpen(true);
+                      }}
+                  />
+                  <Overlay onClick={() => {  
+                    setPost(post);
+                    setIsOpen(true);
+                  }}>
+                    <p>
+                      <span style={{ marginRight: '20px' }}>
+                        <FavoriteBorderIcon color="inherit" />{post.p_like}
+                      </span>
+                      <span>
+                        <TextsmsIcon color="inherit" />{post.p_text}
+                      </span>
+                    </p>
+                  </Overlay>
+                </ImageContainer>
+              </Item>
+            </div>
           ))}
         </Grid>
       </Container>
