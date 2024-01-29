@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Helmet } from "react-helmet";
 import styled from "styled-components";
+import Addpost from "./Addpost";
 import PostDialog from "./PostDialog";
 import TextsmsIcon from '@mui/icons-material/Textsms';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -8,9 +9,9 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 // 포스트 목록
 const posts = [
   {
-    p_id: 1,
-    p_text: "리액트 공부중…",
-    p_image:
+    postId: 1,
+    postText: "리액트 공부중…",
+    image:
       "https://velog.velcdn.com/images/dooooh2/post/e03d49ee-8c38-4195-ae3e-1ca6668d9581/image.png",
     p_like: 3,
   },
@@ -97,6 +98,15 @@ const ProfileInfo = styled.div`
   flex-direction: column;
   margin-left: 20px;
 `;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`;
+// 이미지 버튼 스타일링을 하는 것 입니다. 추후 변경 예정입니다. 
+
 
 const Grid = styled.div`
   display: grid;
@@ -215,6 +225,10 @@ export default function Profile() {
     posts: posts.length,
     bio: "안녕 내이름을 소개하지",
   };
+  const addPost = () => {
+    // Addpost 컴포넌트를 사용하는 로직
+    console.log("Addpost button clicked!");
+  };
 
   return (
     <>
@@ -226,6 +240,7 @@ export default function Profile() {
         <TopBar>
           <div>Instagram Clone Coding</div>
           <div>
+          <Addpost addPost={addPost} /> {/* Addpost 컴포넌트 사용 */}
             <Button>프로필</Button>
             <Button>보관된 스토리 보기</Button>
             <Button>⚙️</Button>
