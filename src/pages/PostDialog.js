@@ -7,9 +7,8 @@ import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
 import { styled } from "@mui/material/styles";
 import { useEffect, useState } from "react";
-import fullHeart from '../icon/fullHeart.png';
-import heart from '../icon/heart.png';
-
+import fullHeart from "../icon/fullHeart.png";
+import heart from "../icon/heart.png";
 
 const profiles = {
   u_id: 1,
@@ -54,6 +53,9 @@ const LeftContent = styled("div")({
 const RightContent = styled("div")({
   flex: "0 0 50%", // Take up 50% of the width
   paddingLeft: "16px", // Add some spacing between left and right content
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "space-between",
 });
 
 const UserInformation = styled("div")({
@@ -80,6 +82,16 @@ const HeartImg = styled("img")({
   width: "100%",
   height: "100%",
   objectFit: "cover",
+});
+
+const Row = styled("div")({
+  width: "100%",
+  display: "grid",
+  gridTemplateColumns: "1fr 5fr",
+  flexDirection: "row",
+  justifyContent: "space-between",
+  alignItems: "center",
+  marginBottom: "8px",
 });
 
 export default function PostDialog({ open, onClose, post }) {
@@ -111,11 +123,10 @@ export default function PostDialog({ open, onClose, post }) {
     setComments(updatedComments);
   };
 
-  const cdHeart = function(e){
-    if(e.target.getAttribute("src") == heart){
+  const cdHeart = function (e) {
+    if (e.target.getAttribute("src") == heart) {
       e.target.setAttribute("src", fullHeart);
-    }
-    else if(e.target.getAttribute("src") == fullHeart){
+    } else if (e.target.getAttribute("src") == fullHeart) {
       e.target.setAttribute("src", heart);
     }
   };
@@ -145,82 +156,85 @@ export default function PostDialog({ open, onClose, post }) {
 
         {/* 다이얼로그 내용 */}
         <DialogContent dividers>
-        <div style={{ display: "flex" }}>
-          <LeftContent>
-            {/* 포스트의 이미지 표시 */}
-            <PostImg
-              src={post.p_image}
-              alt={post?.p_text}
-              style={{ maxWidth: "100%", height: "auto" }}
-            />
-          </LeftContent>
+          <div style={{ display: "flex" }}>
+            <LeftContent>
+              {/* 포스트의 이미지 표시 */}
+              <PostImg
+                src={post.p_image}
+                alt={post?.p_text}
+                style={{ maxWidth: "100%", height: "auto" }}
+              />
+            </LeftContent>
 
-          <RightContent>
-            {/* 이용자 */}
-            <UserInformation>
-              <UserImage src={profiles.u_image} alt={profiles.u_name} />
-              <DialogTitle sx={{ m: 0, p: 0 }}>{post.p_text}</DialogTitle>
-            </UserInformation>
-            <hr />
-            <div style={{ display: "flex", alignItems: "center" }}>
-              {/* 포스트 한 사람의 정보, 캡션*/}
-              <UserInformation>
-                <UserImage src={profiles.u_image} alt={profiles?.u_name} />
-                {profiles?.u_name}
-              </UserInformation>
-              <div style={{ marginLeft: "8px" }}>{profiles?.u_text}</div>
-            </div>
+            <RightContent>
+              {/* 이용자 */}
+              <div>
+                <UserInformation>
+                  <UserImage src={profiles.u_image} alt={profiles.u_name} />
+                  <DialogTitle sx={{ m: 0, p: 0 }}>{post.p_text}</DialogTitle>
+                </UserInformation>
+                <hr />
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  {/* 포스트 한 사람의 정보, 캡션*/}
+                  <UserInformation>
+                    <UserImage src={profiles.u_image} alt={profiles?.u_name} />
+                    {profiles?.u_name}
+                  </UserInformation>
+                  <div style={{ marginLeft: "8px" }}>{profiles?.u_text}</div>
+                </div>
 
-            {/* 댓글단 사람의 정보, 댓글 내용 */}
-            {/* <div style={{ display: "flex", alignItems: "center" }}> */}
-            {/* 댓글단 사람 정보 */}
-            {/* <UserInformation>
+                {/* 댓글단 사람의 정보, 댓글 내용 */}
+                {/* <div style={{ display: "flex", alignItems: "center" }}> */}
+                {/* 댓글단 사람 정보 */}
+                {/* <UserInformation>
                 <UserImage src={post?.c_image} alt={post?.c_id} />
                 {post?.c_id}
               </UserInformation> */}
-            {/* 댓글 내용 */}
-            {/* <div style={{ marginLeft: "8px" }}>{post?.c_comment}</div>
+                {/* 댓글 내용 */}
+                {/* <div style={{ marginLeft: "8px" }}>{post?.c_comment}</div>
             </div> */}
 
-            <ul>
-              {comments.map((comment, index) => (
-                <li key={index}>
-                  <UserImage src={comment.image} alt={comment.username} />
-                  <span>{comment.text}</span>
-                  <Button onClick={() => deleteComment(index)}>삭제</Button>
-                </li>
-              ))}
-            </ul>
-            <hr/>
-            {/* 좋아요 버튼 */}
-            <HeartImg
-            
-              src={heart}
-              style={{ width: "8%", height: "auto" }}
-              onClick={cdHeart}
-            />
-            <hr/>
-            {/* 다이얼로그 하단의 액션 버튼 */}
-        <DialogActions
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            paddingRight: "16px",
-          }}
-        >
-          <input
-            type="text"
-            value={newComment}
-            onChange={(e) => setNewComment(e.target.value)}
-            placeholder="댓글 달기..."
-            style={{ flex: "1", marginRight: "8px" }}
-          />
-          <Button onClick={addComment}>게시</Button>
-        </DialogActions>
-
-            
-          </RightContent>
+                <ul>
+                  {comments.map((comment, index) => (
+                    <li key={index}>
+                      <UserImage src={comment.image} alt={comment.username} />
+                      <span>{comment.text}</span>
+                      <Button onClick={() => deleteComment(index)}>삭제</Button>
+                    </li>
+                  ))}
+                </ul>
+                <hr />
+              </div>
+              {/* 좋아요 버튼 */}
+              <Row>
+                <div style={{ width: "50px" }}>
+                  <HeartImg
+                    src={heart}
+                    style={{ width: "30px", height: "auto" }}
+                    onClick={cdHeart}
+                  />
+                </div>
+                {/* <hr/> */}
+                {/* 다이얼로그 하단의 액션 버튼 */}
+                <DialogActions
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    paddingRight: "16px",
+                  }}
+                >
+                  <input
+                    type="text"
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                    placeholder="댓글 달기..."
+                    style={{ flex: "1", marginRight: "8px", width: "100%" }}
+                  />
+                  <Button onClick={addComment}>게시</Button>
+                </DialogActions>
+              </Row>
+            </RightContent>
           </div>
         </DialogContent>
       </BootstrapDialog>
