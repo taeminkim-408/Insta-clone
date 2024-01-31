@@ -84,6 +84,22 @@ const HeartImg = styled("img")({
   objectFit: "cover",
 });
 
+/*
+const pool = require('./db'); db.js 파일을 만든다면, 여기에서 만든 mariadb 연결 객체 불러오기
+<db.js>
+const mariadb = require('mariadb');
+
+const pool = mariadb.createPool({
+  host: 'your_host',
+  user: 'your_user',
+  password: 'your_password',
+  database: 'your_database',
+  connectionLimit: 5,
+});
+
+module.exports = pool;
+*/
+
 const Row = styled("div")({
   width: "100%",
   display: "grid",
@@ -99,28 +115,57 @@ export default function PostDialog({ open, onClose, post }) {
   const [newComment, setNewComment] = useState("");
 
   useEffect(() => {
-    setComments(post && post.comments ? post.comments : []);
+    if (pool) {
+      fetchCommentsFromDatabase(post.p_id);
+    } else {
+      setComments(dummy_comments);
+    }
   }, [post]);
 
-  const addComment = () => {
-    if (newComment.trim() !== "") {
-      setComments([
-        ...comments,
-        {
-          text: newComment,
-          username: "c_id",
-          image:
-            "https://scontent-ssn1-1.xx.fbcdn.net/v/t1.6435-9/67836763_542983346542742_576946324126040064_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=7f8c78&_nc_ohc=kFamEBZEbR4AX-Bunxe&_nc_ht=scontent-ssn1-1.xx&oh=00_AfDlaxZTI8Ov2gKBrDknug0GK1x6RWmiQNXX3BGuhAVCag&oe=65D476F3",
-        },
-      ]);
-      setNewComment("");
+  const fetchCommentsFromDatabase = async (postId) => {
+    try {
+      if (pool) {
+        const connection = await pool.getConnection();
+        const [rows] = await connection.query('SELECT * FROM comments WHERE post_id = ?', [postId]);
+        connection.release();
+        setComments(rows);
+      }
+    } catch (error) {
+      console.error('Error fetching comments:', error);
     }
   };
 
-  const deleteComment = (commentIndex) => {
-    const updatedComments = [...comments];
-    updatedComments.splice(commentIndex, 1);
-    setComments(updatedComments);
+  const addComment = async () => {
+    try {
+      if (pool && newComment.trim() !== '') {
+        const connection = await pool.getConnection();
+        await connection.query('INSERT INTO comments (post_id, text, username, image) VALUES (?, ?, ?, ?)', [
+          post.p_id,
+          newComment,
+          'c_id', // 변경 필요
+          'https://scontent-ssn1-1.xx.fbcdn.net/v/t1.6435-9/67836763_542983346542742_576946324126040064_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=7f8c78&_nc_ohc=kFamEBZEbR4AX-Bunxe&_nc_ht=scontent-ssn1-1.xx&oh=00_AfDlaxZTI8Ov2gKBrDknug0GK1x6RWmiQNXX3BGuhAVCag&oe=65D476F3',
+        ]);
+        connection.release();
+        fetchCommentsFromDatabase(post.p_id);
+
+        setNewComment('');
+      }
+    } catch (error) {
+      console.error('Error adding comment:', error);
+    }
+  };
+
+
+  const deleteComment = async (commentIndex) => {
+    try {
+      const connection = await pool.getConnection();
+      await connection.query('DELETE FROM comments WHERE comment_id = ?', [comments[commentIndex].comment_id]);
+      connection.release();
+
+      fetchCommentsFromDatabase(post.p_id);
+    } catch (error) {
+      console.error('Error deleting comment:', error);
+    }
   };
 
   const cdHeart = function (e) {
@@ -193,7 +238,6 @@ export default function PostDialog({ open, onClose, post }) {
                 {/* 댓글 내용 */}
                 {/* <div style={{ marginLeft: "8px" }}>{post?.c_comment}</div>
             </div> */}
-
                 <ul>
                   {comments.map((comment, index) => (
                     <li key={index}>
