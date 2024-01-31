@@ -3,8 +3,8 @@ import { Helmet } from "react-helmet";
 import styled from "styled-components";
 import Addpost from "./Addpost";
 import PostDialog from "./PostDialog";
-import TextsmsIcon from '@mui/icons-material/Textsms';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import TextsmsIcon from "@mui/icons-material/Textsms";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 // 포스트 목록
 const posts = [
@@ -58,7 +58,7 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  padding: 0 20px;
+  /* padding: 0 20px; */
 
   @media (max-width: 768px) {
     padding: 0 10px;
@@ -115,8 +115,7 @@ const ButtonContainer = styled.div`
   align-items: center;
   flex-direction: column;
 `;
-// 이미지 버튼 스타일링을 하는 것 입니다. 추후 변경 예정입니다. 
-
+// 이미지 버튼 스타일링을 하는 것 입니다. 추후 변경 예정입니다.
 
 const Grid = styled.div`
   display: grid;
@@ -264,7 +263,7 @@ export default function Profile() {
         <TopBar>
           <div>Instagram Clone Coding</div>
           <div>
-          <Addpost addPost={addPost} /> {/* Addpost 컴포넌트 사용 */}
+            <Addpost addPost={addPost} />
             <Button>프로필</Button>
             <Button>보관된 스토리 보기</Button>
             <Button>⚙️</Button>
@@ -302,28 +301,43 @@ export default function Profile() {
 
         <Grid>
           {posts.map((post) => (
-            <div style={{ display: 'flex', flexDirection: 'column', paddingBottom: '0px', paddingTop: '0px', position: 'relative' }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                paddingBottom: "0px",
+                paddingTop: "0px",
+                position: "relative",
+              }}
+            >
               <Item key={post.p_id}>
                 <ImageContainer>
                   <img
-                      src={post.p_image}
-                      alt={post.p_text}
-
-                      onClick={() => {
-                        setPost(post);
-                        setIsOpen(true);
-                      }}
+                    src={post.p_image}
+                    alt={post.p_text}
+                    onClick={() => {
+                      setPost(post);
+                      setIsOpen(true);
+                    }}
                   />
-                  <Overlay onClick={() => {  
-                    setPost(post);
-                    setIsOpen(true);
-                  }}>
-                    <p>
-                      <span style={{ marginRight: '20px' }}>
-                        <FavoriteBorderIcon color="inherit" />{post.p_like}
+                  <Overlay
+                    onClick={() => {
+                      setPost(post);
+                      setIsOpen(true);
+                    }}
+                  >
+                    <p style={{ display: "flex", flexDirection: "row" }}>
+                      <span
+                        style={{
+                          marginRight: "20px",
+                        }}
+                      >
+                        <FavoriteBorderIcon color="inherit" />
+                        {post.p_like}
                       </span>
                       <span>
-                        <TextsmsIcon color="inherit" />{post.p_text}
+                        <TextsmsIcon color="inherit" />
+                        {post.p_text}
                       </span>
                     </p>
                   </Overlay>
