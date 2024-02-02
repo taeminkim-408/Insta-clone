@@ -1,55 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import styled from "styled-components";
 import Addpost from "./Addpost";
 import PostDialog from "./PostDialog";
 import TextsmsIcon from "@mui/icons-material/Textsms";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-
-// 포스트 목록
-const posts = [
-  {
-    postId: 1,
-    postText: "리액트 공부중…",
-    image:
-      "https://velog.velcdn.com/images/dooooh2/post/e03d49ee-8c38-4195-ae3e-1ca6668d9581/image.png",
-    p_like: 3,
-  },
-  {
-    p_id: 2,
-    p_text: "마라탕먹고싶다",
-    p_image: "https://www.foodjang.com/New/05/221806880/221806880_b_1.jpg",
-    p_like: 120,
-  },
-  {
-    p_id: 3,
-    p_text: "오늘은 뭐하지",
-    p_image:
-      "https://www.thecookierookie.com/wp-content/uploads/2018/07/bulletproof-coffee-recipe-5-of-9.jpg",
-    p_like: 210,
-  },
-  {
-    p_id: 4,
-    p_text: "한동에는 눈폭탄이 떨어졌습니다",
-    p_image:
-      "https://sarang.handong.edu/dcp/editor/images/%5B%ED%81%AC%EA%B8%B0%EB%B3%80%ED%99%98%5D12%EC%9B%94_PC(2).png",
-    p_like: 55,
-  },
-  {
-    p_id: 5,
-    p_text: "한동에 봄이 더 빨리 오길 바라며",
-    p_image:
-      "https://encrypted-tbn0.gstatic.com/p_images?q=tbn:ANd9GcRIMF36D7fGoiY4yFSKoVNnN-hm21j1TDAlpA&usqp=CAU",
-    p_like: 3012,
-  },
-  {
-    p_id: 6,
-    p_text: "한동인에게 듣는 한동인 이야기",
-    p_image:
-      "https://encrypted-tbn0.gstatic.com/p_images?q=tbn:ANd9GcQqKTQEdvPq-Nh5KZFrRfvgTClJetQB_Do68w&usqp=CAU",
-    p_like: 1243,
-  },
-];
+import axios from 'axios';
 
 // 스타일드 컴포넌트를 사용하여 스타일 지정
 const Container = styled.div`
@@ -230,9 +186,27 @@ const Overlay = styled.div`
   }
 `;
 
+// axios로 front-back 연결하기
+// userId로 post 불러오기.
+const Posts = ({ userId, setPostsData }) => {
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8080/post/readbyid/${userId}`);
+        setPostsData(response.data); // 부모 컴포넌트로 데이터 전달
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      }
+    };
+
+    fetchPosts();
+  }, [userId, setPostsData]);
+};
+
 export default function Profile() {
   const [isOpen, setIsOpen] = useState(false);
   const [post, setPost] = useState(null);
+  const [postsData, setPostsData] = useState([]);
 
   const handleCloseDialog = () => {
     setIsOpen(false);
@@ -245,12 +219,23 @@ export default function Profile() {
     fullName: "한동인",
     followers: 100,
     following: 50,
-    posts: posts.length,
+    Posts: Posts.length,
     bio: "안녕 내이름을 소개하지",
+    userId: 4,
   };
-  const addPost = () => {
-    // Addpost 컴포넌트를 사용하는 로직
-    console.log("Addpost button clicked!");
+
+  const addPost = (newPostData) => {
+    axios.post('http://localhost:8080/post/create', {
+      ...newPostData,
+      userId: user.userId, // Profile.js에서 정의된 user의 userId 사용
+    })
+    .then(response => {
+      console.log('Post created successfully:', response.data);
+      // 포스트 생성 후 필요한 동작, 예를 들어 포스트 목록 업데이트 등
+    })
+    .catch(error => {
+      console.error('Error creating post:', error);
+    });
   };
 
   return (
@@ -300,21 +285,23 @@ export default function Profile() {
         <Divider />
 
         <Grid>
-          {posts.map((post) => (
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                paddingBottom: "0px",
-                paddingTop: "0px",
-                position: "relative",
-              }}
-            >
-              <Item key={post.p_id}>
+          <Posts userId={user.userId} setPostsData={setPostsData} />
+            {postsData.map((post) => (
+              <div
+                key={post.postId}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  paddingBottom: "0px",
+                  paddingTop: "0px",
+                  position: "relative",
+                }}
+              >
+              <Item key={post.postId}>
                 <ImageContainer>
                   <img
-                    src={post.p_image}
-                    alt={post.p_text}
+                    src={post.postImage}
+                    alt={post.postText}
                     onClick={() => {
                       setPost(post);
                       setIsOpen(true);
@@ -333,18 +320,18 @@ export default function Profile() {
                         }}
                       >
                         <FavoriteBorderIcon color="inherit" />
-                        {post.p_like}
+                        {post.postLike}
                       </span>
                       <span>
                         <TextsmsIcon color="inherit" />
-                        {post.p_text}
+                        {post.postText}
                       </span>
                     </p>
                   </Overlay>
-                </ImageContainer>
-              </Item>
-            </div>
-          ))}
+                 </ImageContainer>
+                </Item>
+              </div>
+            ))}
         </Grid>
       </Container>
 
