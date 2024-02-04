@@ -5,7 +5,7 @@ import Addpost from "./Addpost";
 import PostDialog from "./PostDialog";
 import TextsmsIcon from "@mui/icons-material/Textsms";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import axios from 'axios';
+import axios from "axios";
 
 // 스타일드 컴포넌트를 사용하여 스타일 지정
 const Container = styled.div`
@@ -192,7 +192,9 @@ const Posts = ({ userId, setPostsData }) => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/post/readbyid/${userId}`);
+        const response = await axios.get(
+          `http://localhost:8080/post/readbyid/${userId}`
+        );
         setPostsData(response.data); // 부모 컴포넌트로 데이터 전달
       } catch (error) {
         console.error("Error fetching data: ", error);
@@ -225,17 +227,18 @@ export default function Profile() {
   };
 
   const addPost = (newPostData) => {
-    axios.post('http://localhost:8080/post/create', {
-      ...newPostData,
-      userId: user.userId, // Profile.js에서 정의된 user의 userId 사용
-    })
-    .then(response => {
-      console.log('Post created successfully:', response.data);
-      // 포스트 생성 후 필요한 동작, 예를 들어 포스트 목록 업데이트 등
-    })
-    .catch(error => {
-      console.error('Error creating post:', error);
-    });
+    axios
+      .post("http://localhost:8080/post/create", {
+        ...newPostData,
+        userId: user.userId, // Profile.js에서 정의된 user의 userId 사용
+      })
+      .then((response) => {
+        console.log("Post created successfully:", response.data);
+        // 포스트 생성 후 필요한 동작, 예를 들어 포스트 목록 업데이트 등
+      })
+      .catch((error) => {
+        console.error("Error creating post:", error);
+      });
   };
 
   return (
@@ -286,17 +289,17 @@ export default function Profile() {
 
         <Grid>
           <Posts userId={user.userId} setPostsData={setPostsData} />
-            {postsData.map((post) => (
-              <div
-                key={post.postId}
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  paddingBottom: "0px",
-                  paddingTop: "0px",
-                  position: "relative",
-                }}
-              >
+          {postsData.map((post) => (
+            <div
+              key={post.postId}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                paddingBottom: "0px",
+                paddingTop: "0px",
+                position: "relative",
+              }}
+            >
               <Item key={post.postId}>
                 <ImageContainer>
                   <img
@@ -328,10 +331,10 @@ export default function Profile() {
                       </span>
                     </p>
                   </Overlay>
-                 </ImageContainer>
-                </Item>
-              </div>
-            ))}
+                </ImageContainer>
+              </Item>
+            </div>
+          ))}
         </Grid>
       </Container>
 
